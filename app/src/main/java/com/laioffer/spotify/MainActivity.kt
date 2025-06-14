@@ -64,7 +64,6 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// test
 @Composable
 fun AlbumCover() {
     Column {
