@@ -41,26 +41,28 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d(TAG, "We are at onCreate()")
-        setContent {
-            SpotifyTheme {
-                // A surface container using the 'background' color from the theme
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colors.background
-                ) {
-//                    Greeting("Android")
-//                    HelloContent()
-//                    var name by remember {
-//                        mutableStateOf("")
-//                    }
-//                    HelloContentStateless(
-//                        name = name,
-//                        onNameChange = { name = it}
-//                    )
-                    AlbumCover()
-                }
-            }
-        }
+
+        // Compose
+//        setContent {
+//            SpotifyTheme {
+//                // A surface container using the 'background' color from the theme
+//                Surface(
+//                    modifier = Modifier.fillMaxSize(),
+//                    color = MaterialTheme.colors.background
+//                ) {
+////                    Greeting("Android")
+////                    HelloContent()
+////                    var name by remember {
+////                        mutableStateOf("")
+////                    }
+////                    HelloContentStateless(
+////                        name = name,
+////                        onNameChange = { name = it}
+////                    )
+//                    AlbumCover()
+//                }
+//            }
+//        }
     }
 }
 
