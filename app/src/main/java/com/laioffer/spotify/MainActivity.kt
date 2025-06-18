@@ -65,6 +65,7 @@ class MainActivity : AppCompatActivity() {
             true
         }
 
+        /*
         // Test Retrofit
         val retrofit = NetworkModule.provideRetrofit()
         val api: NetworkApi = retrofit.create(NetworkApi::class.java)
@@ -75,6 +76,9 @@ class MainActivity : AppCompatActivity() {
             val sections = response.body()
             Log.d("Network", sections.toString())
         }
+        */
+
+
     }
 }
 

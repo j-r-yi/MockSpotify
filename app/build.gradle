@@ -100,6 +100,8 @@ dependencies {
 
 
     // mvvm viewModel
+    implementation "androidx.lifecycle:lifecycle-viewmodel-compose:2.5.1"
+
 
     // room database
 
