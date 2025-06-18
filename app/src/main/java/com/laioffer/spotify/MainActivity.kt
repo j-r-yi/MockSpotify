@@ -36,7 +36,7 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     @Inject
-    lateinit var api: NetworkApi
+    lateinit var networkApi: NetworkApi
 
     private val TAG = "lifecycle"
 
