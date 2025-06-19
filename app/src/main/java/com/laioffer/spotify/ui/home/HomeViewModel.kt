@@ -30,7 +30,6 @@ class HomeViewModel @Inject constructor( // immutable
         viewModelScope.launch{
             val sections: List<Section> = homeRepository.getHomeSections()
             _uiState.value = HomeUiState(feed = sections, isLoading = false)
-
             Log.d("HomeViewModel",  _uiState.value.toString())
         }
     }
