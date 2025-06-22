@@ -10,13 +10,21 @@
         android:name="com.laioffer.spotify.ui.home.HomeFragment"
         tools:layout="@layout/fragment_home"
         android:label="HomeFragment"
-        />
+        >
+        <action
+            android:id="@+id/action_homeFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/favoriteFragment"
         android:name="com.laioffer.spotify.ui.favorite.FavoriteFragment"
         tools:layout="@layout/fragment_favorite"
-        android:label="FavoriteFragment"/>
+        android:label="FavoriteFragment">
+        <action
+            android:id="@+id/action_favoriteFragment_to_playlistFragment"
+            app:destination="@id/playlistFragment" />
+    </fragment>
 
     <fragment
         android:id="@+id/playlistFragment"
