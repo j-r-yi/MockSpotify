@@ -9,14 +9,17 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PlaylistFragment : Fragment() {
-    // retrieve arguments passed to this fragment
     private val navArgs by navArgs<PlaylistFragmentArgs>()
+    private val viewModel: PlaylistViewModel by viewModels()
 
+
+    // Create empty UI on initial load
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -25,15 +28,20 @@ class PlaylistFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 MaterialTheme(colors = darkColors()) {
+                    PlaylistScreen(
+                        playlistViewModel = viewModel
+                    )
+
                 }
             }
         }
     }
 
+    // after created fetch playlist
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // log the album passed to this fragment
         Log.d("PlaylistFragment", navArgs.album.toString())
+        viewModel.fetchPlaylist(navArgs.album)
     }
 
 }

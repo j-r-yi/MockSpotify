@@ -4,6 +4,6 @@ import com.google.gson.annotations.SerializedName
 
 data class Playlist(
     @SerializedName("id")
-    val albumId: String,
+    val albumId: Int,
     val songs: List<Song>
 )

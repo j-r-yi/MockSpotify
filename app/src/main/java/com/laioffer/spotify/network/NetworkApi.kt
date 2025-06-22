@@ -13,7 +13,7 @@ interface NetworkApi {
     fun getHomeFeed(): Call<List<Section>>
 
     // http://0.0.0.0:8080/playlist/{id}
-    @GET("playlist/{id}")
+    @GET("playlists/{id}")
     fun getPlaylist(@Path("id") id: Int): Call<Playlist>
 
 }

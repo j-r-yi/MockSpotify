@@ -17,6 +17,7 @@ import javax.inject.Inject
 class PlaylistViewModel @Inject constructor(
     private val playlistRepository: PlaylistRepository
 ) : ViewModel() {
+    // start with a dummy album
     private val _uiState: MutableStateFlow<PlaylistUiState> = MutableStateFlow(
         PlaylistUiState(
             album = Album(
@@ -35,10 +36,13 @@ class PlaylistViewModel @Inject constructor(
     fun fetchPlaylist(album: Album) {
         _uiState.value = _uiState.value.copy(album = album)
 
+        // coroutine goes to model and retreives album from endpoint
         viewModelScope.launch {
+            Log.d("PlaylistViewModel", "Fetching playlist with id = ${album.id}")
             val playlist = playlistRepository.getPlaylist(album.id)
             _uiState.value = _uiState.value.copy(
-                playlist = playlist.songs)
+                playlist = playlist.songs
+            )
             Log.d("PlaylistViewModel", _uiState.value.toString())
         }
     }
