@@ -2,26 +2,33 @@ package com.laioffer.spotify
 
 import android.os.Bundle
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
+import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.ComposeView
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI
+import androidx.room.Room
 import coil.compose.AsyncImage
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.laioffer.spotify.database.AppDatabase
 import com.laioffer.spotify.database.DatabaseDao
 import com.laioffer.spotify.datamodel.Album
 import com.laioffer.spotify.network.NetworkApi
+import com.laioffer.spotify.player.PlayerBar
+import com.laioffer.spotify.player.PlayerViewModel
 import com.laioffer.spotify.repository.HomeRepository
 import com.laioffer.spotify.ui.theme.SpotifyTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,52 +38,49 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-// customized extend AppCompatActivity
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-
     @Inject
-    lateinit var networkApi: NetworkApi
+    lateinit var api: NetworkApi
     @Inject
     lateinit var databaseDao: DatabaseDao
-
-    private val TAG = "lifecycle"
+    private val playerViewModel: PlayerViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Log.d(TAG, "We are at onCreate()")
         setContentView(R.layout.activity_main)
 
+        // findElementById("")
         val navView = findViewById<BottomNavigationView>(R.id.nav_view)
-
-        // navHost, navController
-        // using navController to change the fragment in navHost
-
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.nav_host_fragment) as NavHostFragment
         val navController = navHostFragment.navController
         navController.setGraph(R.navigation.nav_graph)
-
-        // let bottom nav navigate
         NavigationUI.setupWithNavController(navView, navController)
-
-        // https://stackoverflow.com/questions/70703505/navigationui-not-working-correctly-with-bottom-navigation-view-implementation
-        navView.setOnItemSelectedListener{
+        navView.setOnItemSelectedListener {
             NavigationUI.onNavDestinationSelected(it, navController)
             navController.popBackStack(it.itemId, inclusive = false)
             true
         }
+        val playerBar = findViewById<ComposeView>(R.id.player_bar)
+        playerBar.apply {
+            setContent {
+                MaterialTheme(colors = darkColors()) {
+                    PlayerBar(
+                        playerViewModel
+                    )
+                }
+            }
+        }
 
-        /*
         // Test retrofit
         GlobalScope.launch(Dispatchers.IO) {
             //val api = NetworkModule.provideRetrofit().create(NetworkApi::class.java)
             val response = api.getHomeFeed().execute().body()
             Log.d("Network", response.toString())
         }
-        */
-        /*
-        // Mock data to test: remember it runs everytime you start the app
+
+        // remember it runs everytime you start the app
         GlobalScope.launch {
             withContext(Dispatchers.IO) {
                 val album = Album(
@@ -90,37 +94,54 @@ class MainActivity : AppCompatActivity() {
                 databaseDao.favoriteAlbum(album)
             }
         }
-        */
-
 
     }
 }
 
 @Composable
+private fun LoadingSection(text: String) {
+    Row(modifier = Modifier.padding(vertical = 8.dp)) {
+        Text(
+            text = text,
+            style = MaterialTheme.typography.body2,
+            color = Color.White
+        )
+    }
+}
+
+@Composable
 fun AlbumCover() {
-    Column {
+    Column() {
         Box(modifier = Modifier.size(160.dp)) {
-            // "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg"
-//            Image(painter = , contentDescription = )
             AsyncImage(
                 model = "https://upload.wikimedia.org/wikipedia/en/d/d1/Stillfantasy.jpg",
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.FillBounds)
-            Text(
+                contentScale = ContentScale.FillBounds
+            )
+
+            Text( // ctrl + J
                 text = "Still Fantasy",
                 color = Color.White,
-                modifier = Modifier
-                    .padding(bottom = 4.dp, start = 2.dp)
-                    .align(Alignment.BottomStart)
+                modifier = Modifier.padding(bottom = 4.dp, start = 2.dp).align(Alignment.BottomStart)
             )
         }
         Text(
-            text = "Jay Chou",
-            modifier = Modifier.padding(top = 4.dp, start = 2.dp),
-            color = Color.LightGray,
-            // kotlin data class
-            style = MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold)
-        )
+            text = "jay Chu",
+            modifier = Modifier.padding(top = 4.dp),
+            style=MaterialTheme.typography.body2.copy(fontWeight = FontWeight.Bold),
+            color = Color.White)
     }
 }
+
+
+@Preview(showBackground = true, name = "Preview LoadingSection")
+@Composable
+fun DefaultPreview() {
+    SpotifyTheme {
+        Surface {
+            AlbumCover()
+        }
+    }
+}
+

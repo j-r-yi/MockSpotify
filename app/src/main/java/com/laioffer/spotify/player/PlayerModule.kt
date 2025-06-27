@@ -10,7 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-// So that hilt knows how to inject
 @Module
 @InstallIn(SingletonComponent::class)
 object PlayerModule {
